@@ -30,45 +30,52 @@ openDropdown(ingredientsBtn, ingredientsDropdown, categoryIngredients, ingredien
 openDropdown(appareilsBtn, appareilsDropdown, categoryAppareils, appareilsInput);
 openDropdown(ustensilesBtn, ustensilesDropdown, categoryUstensiles, ustensilesInput);
 
-function showElementsDropdown(recipes){
-    let ingredientsTags = "";
-    let appareilsTags = "";
-    let ustensilesTags = "";
-    let ingredients = new Set();
-    let appareils = new Set();
-    let ustensiles = new Set();
-    // stock ingredients and check if it's not already in the array 
-    for (let i = 0; i < recipes.length; i++) {
-        for (let obj = 0; obj < recipes[i].ingredients.length; obj++) {
-            if (!ingredients.has(recipes[i].ingredients[obj].ingredient)) {
-                ingredients.add(recipes[i].ingredients[obj].ingredient);
-                ingredientsTags += `<p class="ingredients-tags">${recipes[i].ingredients[obj].ingredient}</p>`;
-                ingredientsWrapper.innerHTML = ingredientsTags;
-            }
-        }
-        // appareils 
-        for(let recipe of recipes){
-            let appliances = recipe.appliance;
-            if (!appareils.has(appliances)){
-                appareils.add(recipe.appliance)
-                appareilsTags += `<p class="appareils-tags">${appliances}</p>`;
-                appareilsWrapper.innerHTML = appareilsTags
-            }
-        }   
+
+function getTags(recipes){
+
+    const ingredientSet = new Set()
+    const applianceSet = new Set()
+    const ustensilSet = new Set()
+
+    recipes.forEach(recipe => {
+        const ingredients = getIngredients(recipe)
+        ingredients.forEach(i => ingredientSet.add(i))
+        
+        applianceSet.add(recipe.appliance)
+
+        recipe.ustensils.forEach(u => ustensilSet.add(u))
+    })
+
+    return{
+        ingredients: Array.from(ingredientSet),
+        ustensils: Array.from(ustensilSet),
+        appliance: Array.from(applianceSet)
     }
-    // ustensiles 
-    for (let i = 0; i < recipes.length; i++) {
-        let recipe = recipes[i];
-        for (let j = 0; j < recipe.ustensils.length; j++) {
-            let ustensil = recipe.ustensils[j];
-            if(!ustensiles.has(recipe.ustensils[j])){
-                ustensiles.add(recipe.ustensils[j]);
-                ustensilesTags += `<p class="ustensiles-tags">${ustensil}</p>`;
-                ustensilesWrapper.innerHTML = ustensilesTags
-            }
-        }
-    }
+}
+
+function getIngredients(recipe){
+    const allIngredients = []
+    const ingredients = recipe.ingredients
+
+    ingredients.forEach(oneIngredient => allIngredients.push(oneIngredient.ingredient))
+
+    return allIngredients
+}
+
+function fillDropwdonws(tags){
+    const ingredientsTags = tags.ingredients.map(ing => `<p class="ingredients-tags">${ing}</p>`)
+    const appliancesTags = tags.appliance.map(apl => `<p class="appareils-tags">${apl}</p>`)
+    const ustensilsTags = tags.ustensils.map(ust => `<p class="ustensiles-tags">${ust}</p>` )
+
+    ingredientsWrapper.innerHTML = ingredientsTags.join('')
+
+    appareilsWrapper.innerHTML = appliancesTags.join('')
+
+    ustensilesWrapper.innerHTML = ustensilsTags.join('')
 
 }
 
-
+function showElementsDropdown(recipes){
+    const tags = getTags(recipes)
+    fillDropwdonws(tags)
+}
