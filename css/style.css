@@ -218,11 +218,10 @@ img{
 }
 
 .dropdown-wrapper{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     padding: 0.2rem 15px;
     max-height: 397px;
-    flex-wrap: wrap;
     overflow: auto;
 }
 

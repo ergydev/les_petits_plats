@@ -1,3 +1,4 @@
+const inputs = document.querySelectorAll('.filters-input')
 // ingredients 
 const ingredientsBtn = document.getElementById('ingredients-btn');
 const categoryIngredients = document.querySelector('.category__ingredients');
@@ -19,8 +20,8 @@ const ustensilesDropdown = document.getElementById('ustensiles__dropdown');
 const ustensilesWrapper = document.getElementById('ustensiles-dropdown-wrapper');
 const ustensilesInput = document.getElementById('ustensiles-search');
 
-function openDropdown(btn, dropdown, category, input){
-    btn.addEventListener('click', function(e){
+function openDropdown(inputs, dropdown, category, input){
+    inputs.addEventListener('click', function(e){
         dropdown.classList.toggle('hidden');
         category.classList.toggle('expand__' + category.id);
         input.placeholder = category.classList.contains('expand__' + category.id) ? 'Rechercher par ' + category.id : category.id;
