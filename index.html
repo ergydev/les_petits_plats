@@ -31,13 +31,13 @@
             <!-- searchbar  -->
             <div id="header__filters">
                 <div class="header__filters--tags my-3">
-                    <div class="filter__tag d-flex text-light align-items-center py-2 px-3 rounded">
+                    <!-- <div class="filter__tag d-flex text-light align-items-center py-2 px-3 rounded">
                         <p class="filter__tag--text px-1 me-2 fw-bold">Coco</p>
                         <i class="fa-regular fa-circle-xmark close-icon"></i>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- tags  -->
-                <form action="">
+                <form action="POST">
                     <div class="header__filters--categories my-3 d-flex text-light">
                         <div id="ingredients" class="header__filters--categories__wrapper category__ingredients">
                             <!-- <label for="ingredients-search" class="filters__label">Filtrer les recettes par ingrédients</label> -->
@@ -85,6 +85,7 @@
 
     <!-- script  -->
     <script src="./data/recipes.js"></script>
+    <script src="./scripts/utils/filterRecipes.js"></script>
     <script src="./scripts/factories/cardFactory.js"></script>
     <script src="./scripts/utils/dropdownFilters.js"></script>
     <script src="./scripts/api.js"></script>

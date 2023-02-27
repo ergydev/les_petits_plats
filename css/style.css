@@ -200,6 +200,7 @@ img{
     background-color: transparent;
     box-shadow: none;
     color: #fff;
+    cursor: pointer;
 }
 
 
@@ -219,10 +220,11 @@ img{
 
 .dropdown-wrapper{
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0.2rem 15px;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0.3rem 20px;
     max-height: 397px;
     overflow: auto;
+    cursor: pointer;
 }
 
 .dropdown-wrapper p{

@@ -10,6 +10,7 @@ function displayRecipes(recipes){
 async function init(){
     displayRecipes(recipes)
     showElementsDropdown(recipes)
+    filterRecipes(recipes)
 }
 
 init()
