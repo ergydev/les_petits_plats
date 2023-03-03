@@ -53,6 +53,10 @@ img{
     text-transform: capitalize;
 }
 
+form i{
+    cursor: pointer;
+}
+
 /* Fonts  */
 .filter__tag, .filters-input::placeholder, .recipes__card--text__heading, p, .dropdown-wrapper div{
     font-family: 'Lato', 'sans-serif';

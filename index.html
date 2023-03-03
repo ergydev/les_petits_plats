@@ -24,8 +24,8 @@
                 <img src="images/Vectorlogo_petitplats.png" alt="Logo Les Petits Plats" aria-label="Logo Les Petits Plats" class="header__logo--img">
                 <h1 class="header__logo--title fw-bold">Les petits plats</h1>
             </div>
-            <form id="header__searchbar" class="my-5">
-                <input type="search" class="header__searchbar--input rounded w-100 p-4 border border-0" name="search" placeholder="Rechercher une recette" aria-label="search">
+            <form id="header__searchbar" class="my-5" action="">
+                <input type="search" id="search-input" class="header__searchbar--input rounded w-100 p-4 border border-0" name="search" placeholder="Rechercher une recette" aria-label="search">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </form>
             <!-- searchbar  -->
@@ -45,7 +45,7 @@
                             <button id="ingredients-btn" class="btn dropbtn" type="button" aria-label="ouvrir le menu déroulant">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </button>
-                            <div id="ingredients__dropdown" class="hidden">
+                            <div id="ingredients__dropdown" class="hidden dropdowns">
                                 <div id="ingredients-dropdown-wrapper" class="dropdown-wrapper"></div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                             <button id="appareils-btn" class="btn dropbtn" type="button" aria-label="ouvrir le menu déroulant">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </button>
-                            <div id="appareils__dropdown" class="hidden">
+                            <div id="appareils__dropdown" class="hidden dropdowns">
                                 <div id="appareils-dropdown-wrapper" class="dropdown-wrapper"></div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <button id="ustensiles-btn" class="btn dropbtn" type="button" aria-label="ouvrir le menu déroulant">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </button>
-                            <div id="ustensiles__dropdown" class="hidden">
+                            <div id="ustensiles__dropdown" class="hidden dropdowns">
                                 <div id="ustensiles-dropdown-wrapper" class="dropdown-wrapper"></div>
                             </div>
                         </div>
@@ -85,9 +85,11 @@
 
     <!-- script  -->
     <script src="./data/recipes.js"></script>
-    <script src="./scripts/utils/filterRecipes.js"></script>
     <script src="./scripts/factories/cardFactory.js"></script>
-    <script src="./scripts/utils/dropdownFilters.js"></script>
-    <script src="./scripts/api.js"></script>
+    <!-- <script src="./scripts/utils/dropdownFilters.js"></script> -->
+    <script src="./scripts/class/recipe.js"></script>
+    <script src="./scripts/class/dropdown.js"></script>
+    <script src="./scripts/class/utils.js"></script>
+    <script src="./scripts/main.js"></script>
 </body>
 </html>
