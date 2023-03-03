@@ -34,12 +34,17 @@ class Recipe {
                 return ingredient.ingredient.toLowerCase().includes(searchTerm)
             })
 
+            const matchingAppareils = recipe.appliance.filter(appareil =>{
+                return appareil.toLowerCase().includes(searchTerm)
+            })
+
             const matchingUstensils = recipe.ustensils.filter(ustensil => {
                 return ustensil.toLowerCase().includes(searchTerm)
             })
 
             return lowerCaseRecipeName.includes(searchTerm) ||
                     matchingIngredients.length > 0 ||
+                    matchingAppareils.length > 0 ||
                     matchingUstensils.length > 0
         })
         return filteredRecipes

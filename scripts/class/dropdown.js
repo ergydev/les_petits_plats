@@ -40,15 +40,71 @@ class Dropdown{
         const ustensilsTags = tags.ustensils.map(ust => `<p class="ustensiles-tags">${ust}</p>` );
     
         ingredientsWrapper.innerHTML = ingredientsTags.join('');
-    
         appareilsWrapper.innerHTML = appliancesTags.join('');
-    
         ustensilesWrapper.innerHTML = ustensilsTags.join('');
-    
     }
+
+    static handleTagsSearch(tags){
+        const searchInputs = [
+            { input: ingredientsInput, category: categoryIngredients },
+            { input: appareilsInput, category: categoryAppareils },
+            { input: ustensilesInput, category: categoryUstensiles },
+        ];
+
+        searchInputs.forEach(({ input, category}) =>{
+            input.addEventListener('input', (event) =>{
+                let searchTag = event.target.value;
+                searchTag = searchTag.toLowerCase().trim();
+                if(searchTag.length >= 3){
+                    // const filteredTags = tags[category].filter((tag) => tag.toLowerCase().includes(searchTag));
+                    const searchResultTag = Dropdown.searchFilteredTag(tags, searchTag);
+                    Dropdown.displayFilteredTags(searchResultTag);
+                } else{
+                    Dropdown.fillDropwdowns(tags);
+                }
+            })
+        })
+    }
+
+    static searchFilteredTag(tags, searchTag){
+        const filteredTags = {
+            ingredients: [],
+            ustensils: [],
+            appliance: [],
+        };
+
+        tags.ingredients.forEach(tag =>{
+            if(tag.toLowerCase().includes(searchTag)){
+                filteredTags.ingredients.push(tag);
+            }
+        })
+        tags.ustensils.forEach(tag =>{
+            if(tag.toLowerCase().includes(searchTag)){
+                filteredTags.ustensils.push(tag);
+            }
+        })
+        tags.appliance.forEach(tag =>{
+            if(tag.toLowerCase().includes(searchTag)){
+                filteredTags.appliance.push(tag);
+            }
+        })
+        return filteredTags
+    }
+
+    static displayFilteredTags(filteredTags){
+        const ingredientsTags = filteredTags.ingredients.map(ing => `<p class="ingredients-tags">${ing}</p>`);
+        const appliancesTags = filteredTags.appliance.map(apl => `<p class="appareils-tags">${apl}</p>`);
+        const ustensilsTags = filteredTags.ustensils.map(ust => `<p class="ustensiles-tags">${ust}</p>` );
     
+        ingredientsWrapper.innerHTML = ingredientsTags.join('');
+        appareilsWrapper.innerHTML = appliancesTags.join('');
+        ustensilesWrapper.innerHTML = ustensilsTags.join('');
+    }
+
     static showElementsDropdown(recipes){
         const tags = Utils.getTags(recipes);
+        this.handleTagsSearch(tags);
+        this.searchFilteredTag(tags);
         this.fillDropwdowns(tags);
         this.initDropdowns();
     }

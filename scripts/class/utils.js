@@ -8,13 +8,9 @@ class Utils{
         recipes.forEach(recipe => {
             const ingredients = Utils.getIngredients(recipe)
             ingredients.forEach(i => ingredientSet.add(i))
-            
             applianceSet.add(recipe.appliance)
-    
             recipe.ustensils.forEach(u => ustensilSet.add(u))
         })
-        
-    
         return{
             ingredients: Array.from(ingredientSet),
             ustensils: Array.from(ustensilSet),
@@ -29,8 +25,7 @@ class Utils{
         if (Array.isArray(ingredients)) {
           ingredients.forEach(oneIngredient => allIngredients.push(oneIngredient.ingredient))
         }
-        
         return allIngredients
-      }
+    }
       
 }
