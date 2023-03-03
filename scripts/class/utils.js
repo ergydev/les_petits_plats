@@ -6,13 +6,14 @@ class Utils{
         const ustensilSet = new Set()
     
         recipes.forEach(recipe => {
-            const ingredients = getIngredients(recipe)
+            const ingredients = Utils.getIngredients(recipe)
             ingredients.forEach(i => ingredientSet.add(i))
             
             applianceSet.add(recipe.appliance)
     
             recipe.ustensils.forEach(u => ustensilSet.add(u))
         })
+        
     
         return{
             ingredients: Array.from(ingredientSet),
@@ -24,9 +25,12 @@ class Utils{
     static getIngredients(recipe){
         const allIngredients = []
         const ingredients = recipe.ingredients
-    
-        ingredients.forEach(oneIngredient => allIngredients.push(oneIngredient.ingredient))
-    
+        
+        if (Array.isArray(ingredients)) {
+          ingredients.forEach(oneIngredient => allIngredients.push(oneIngredient.ingredient))
+        }
+        
         return allIngredients
-    }
+      }
+      
 }

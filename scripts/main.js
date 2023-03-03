@@ -1,11 +1,11 @@
 (function Init (){
     Recipe.displayRecipes(recipes)
     Recipe.handleSearch(recipes)
-    // Dropdown.openDropdown(recipes)
-    // Dropdown.showElementsDropdown(recipes)
-    // Dropdown.fillDropwdonws(recipes)
-    // Utils.getTags(recipes)
-    // Utils.getIngredients(recipes)
+    Dropdown.openDropdown(recipes)
+    const tags = Utils.getTags(recipes)
+    Utils.getIngredients(recipes)
+    Dropdown.fillDropwdowns(tags)
+    Dropdown.initDropdowns()
 })()
 
 
