@@ -32,6 +32,8 @@ class Dropdown{
         this.openDropdown(ingredientFilter, ingredientsDropdown, categoryIngredients, ingredientsInput);
         this.openDropdown(appareilsFilter, appareilsDropdown, categoryAppareils, appareilsInput);
         this.openDropdown(ustensilesFilter, ustensilesDropdown, categoryUstensiles, ustensilesInput);
+
+        this.handleSelectedTags()
     }
 
     static fillDropwdowns(tags){
@@ -56,7 +58,6 @@ class Dropdown{
                 let searchTag = event.target.value;
                 searchTag = searchTag.toLowerCase().trim();
                 if(searchTag.length >= 3){
-                    // const filteredTags = tags[category].filter((tag) => tag.toLowerCase().includes(searchTag));
                     const searchResultTag = Dropdown.searchFilteredTag(tags, searchTag);
                     Dropdown.displayFilteredTags(searchResultTag);
                 } else{
@@ -103,13 +104,43 @@ class Dropdown{
 
     static handleSelectedTags(){
         const selectedTags = document.querySelectorAll('.dropdown-wrapper .item-tag');
+        const selectedTagsDiv = document.querySelector('.header__filters--tags');
 
         selectedTags.forEach(tag =>{
             tag.addEventListener('click', (event) =>{
                 const tagName = event.target.innerText;
-                const input = event.target.closest('dropdown-wrapper').querySelector('.input');
-                input.value = tagName;
+
+                const tagDiv =  document.createElement('div');
+                tagDiv.classList.add('filter__tag');
+                tagDiv.classList.add('d-flex');
+                tagDiv.classList.add('text-light');
+                tagDiv.classList.add('align-items-center');
+                tagDiv.classList.add('py-2');
+                tagDiv.classList.add('px-3');
+                tagDiv.classList.add('rounded');
+                tagDiv.classList.add('me-2');
+
+                const tagElem = document.createElement('p');
+                tagElem.textContent = tagName;
+                tagElem.classList.add('filter__tag--text');
+                tagElem.classList.add('px-1');
+                tagElem.classList.add('me-2');
+                tagElem.classList.add('fw-bold');
+
+                const tagIcon = document.createElement('i');
+                tagIcon.classList.add('fa-regular');
+                tagIcon.classList.add('fa-circle-xmark');
+                tagIcon.classList.add('close-icon');
+                tagIcon.addEventListener('click', (event) =>{
+                    event.target.parentElement.remove();
+                })
+
+                tagDiv.appendChild(tagElem);
+                tagDiv.appendChild(tagIcon);
+                selectedTagsDiv.appendChild(tagDiv);
+
                 event.stopPropagation();
+                return(tag)
             })
         })
     }

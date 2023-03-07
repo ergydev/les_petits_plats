@@ -117,10 +117,13 @@ form i{
 }
 
 .filter__tag{
-    width: 100px;
+    min-width: 107px;
     font-size: 14px;
     background-color: #3282F7;
     cursor: pointer;
+    text-align: center;
+    height: 37px;
+    justify-content: center;
 }
 
 /* filters  */
