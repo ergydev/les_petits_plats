@@ -35,9 +35,9 @@ class Dropdown{
     }
 
     static fillDropwdowns(tags){
-        const ingredientsTags = tags.ingredients.map(ing => `<p class="ingredients-tags">${ing}</p>`);
-        const appliancesTags = tags.appliance.map(apl => `<p class="appareils-tags">${apl}</p>`);
-        const ustensilsTags = tags.ustensils.map(ust => `<p class="ustensiles-tags">${ust}</p>` );
+        const ingredientsTags = tags.ingredients.map(ing => `<p class="ingredients-tags item-tag">${ing}</p>`);
+        const appliancesTags = tags.appliance.map(apl => `<p class="appareils-tags item-tag">${apl}</p>`);
+        const ustensilsTags = tags.ustensils.map(ust => `<p class="ustensiles-tags item-tag">${ust}</p>` );
     
         ingredientsWrapper.innerHTML = ingredientsTags.join('');
         appareilsWrapper.innerHTML = appliancesTags.join('');
@@ -101,12 +101,26 @@ class Dropdown{
         ustensilesWrapper.innerHTML = ustensilsTags.join('');
     }
 
+    static handleSelectedTags(){
+        const selectedTags = document.querySelectorAll('.dropdown-wrapper .item-tag');
+
+        selectedTags.forEach(tag =>{
+            tag.addEventListener('click', (event) =>{
+                const tagName = event.target.innerText;
+                const input = event.target.closest('dropdown-wrapper').querySelector('.input');
+                input.value = tagName;
+                event.stopPropagation();
+            })
+        })
+    }
+
     static showElementsDropdown(recipes){
         const tags = Utils.getTags(recipes);
         this.handleTagsSearch(tags);
         this.searchFilteredTag(tags);
         this.fillDropwdowns(tags);
         this.initDropdowns();
+        this.handleSelectedTags(tags);
     }
 }
 

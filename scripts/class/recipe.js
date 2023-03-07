@@ -9,53 +9,39 @@ class Recipe {
         recipes.map(recipe => template += createRecipeCard(recipe))
         recipesSection.innerHTML = template
     }
+
     static handleSearch(recipes){
         const searchInput = document.getElementById('search-input');
 
-            searchInput.addEventListener('input', (event) => {
-                let searchTerm = event.target.value
-                searchTerm = searchTerm.toLowerCase().trim();
-                if(searchTerm.length >=  3){
-                    const searchResult = Recipe.searchRecipe(recipes, searchTerm)
-                    Recipe.displayFilteredRecipes(searchResult)
-                }
-                else{
-                    Recipe.displayRecipes(recipes)
-                }
+        searchInput.addEventListener('input', (event) => {
+            let searchTerm = event.target.value
+            searchTerm = searchTerm.toLowerCase().trim();
+            if(searchTerm.length >=  3){
+                const searchResult = Recipe.searchRecipe(recipes, searchTerm)
+                Recipe.displayRecipes(searchResult)
+                const tags = Utils.getTags(searchResult)
+                Dropdown.fillDropwdowns(tags)
             }
-            )
+            if (searchTerm.length = 0){
+                Recipe.displayRecipes(recipes)
+            }
+        })
     }
 
     static searchRecipe(recipes, searchTerm){
         const filteredRecipes = recipes.filter(recipe => {
             const lowerCaseRecipeName = recipe.name.toLowerCase()
+            const lowerCaseRecipeDescription = recipe.description.toLowerCase()
 
             const matchingIngredients = recipe.ingredients.filter(ingredient => {
                 return ingredient.ingredient.toLowerCase().includes(searchTerm)
             })
 
-            const matchingAppareils = recipe.appliance.filter(appareil =>{
-                return appareil.toLowerCase().includes(searchTerm)
-            })
-
-            const matchingUstensils = recipe.ustensils.filter(ustensil => {
-                return ustensil.toLowerCase().includes(searchTerm)
-            })
-
             return lowerCaseRecipeName.includes(searchTerm) ||
-                    matchingIngredients.length > 0 ||
-                    matchingAppareils.length > 0 ||
-                    matchingUstensils.length > 0
+                    lowerCaseRecipeDescription.includes(searchTerm) ||
+                    matchingIngredients.length > 0 
         })
-        return filteredRecipes
-    }
 
-    static displayFilteredRecipes(filteredRecipes){
-        let template = '';
-        const recipesSection = document.querySelector('.recipes__wrapper');
-        filteredRecipes.forEach(recipe => {
-            template += createRecipeCard(recipe)
-        })
-        recipesSection.innerHTML = template;
+        return filteredRecipes
     }
 }
