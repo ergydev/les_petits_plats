@@ -7,6 +7,7 @@
     Dropdown.handleSelectedTags(tags)
     Dropdown.fillDropwdowns(tags)
     Dropdown.initDropdowns()
+    // Recipe.filterRecipesByTags(recipes)
 })()
 
 

@@ -102,14 +102,27 @@ class Dropdown{
         ustensilesWrapper.innerHTML = ustensilsTags.join('');
     }
 
-    static handleSelectedTags(){
+    static handleSelectedTags(recipes){
         const selectedTags = document.querySelectorAll('.dropdown-wrapper .item-tag');
         const selectedTagsDiv = document.querySelector('.header__filters--tags');
+        let selectedTag = [];
 
         selectedTags.forEach(tag =>{
             tag.addEventListener('click', (event) =>{
                 const tagName = event.target.innerText;
+                selectedTag.push(tagName);
+                const index = selectedTag.indexOf(tagName);
+                console.log(selectedTag)
+                // filter recipe
+                // Recipe.filterRecipesByTags(recipes, selectedTag);
+                if(index > -1) {
+                    selectedTag.splice(index, 1)
+                }
 
+                // clear tags
+                // selectedTagsDiv.innerHTML = '';
+
+                
                 const tagDiv =  document.createElement('div');
                 tagDiv.classList.add('filter__tag');
                 tagDiv.classList.add('d-flex');
@@ -133,14 +146,19 @@ class Dropdown{
                 tagIcon.classList.add('close-icon');
                 tagIcon.addEventListener('click', (event) =>{
                     event.target.parentElement.remove();
+                    const index = selectedTag.indexOf(tag);
+                    if(index > -1) {
+                        selectedTag.splice(index, 1);
+                        // Recipe.filterRecipesByTags(recipes, selectedTag)
+                    }
                 })
-
+                
                 tagDiv.appendChild(tagElem);
                 tagDiv.appendChild(tagIcon);
                 selectedTagsDiv.appendChild(tagDiv);
 
                 event.stopPropagation();
-                return(tag)
+                return(selectedTag)
             })
         })
     }
