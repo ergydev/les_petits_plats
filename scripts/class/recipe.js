@@ -22,12 +22,16 @@ class Recipe {
                     Recipe.displayRecipes(searchResult)
                     const tags = Utils.getTags(searchResult)
                     Dropdown.fillDropwdowns(tags)
-                if(searchResult.length === 0){
-                    Recipe.displayRecipes();
+                    Dropdown.handleTagsSearch(tags)
+                    Dropdown.handleSelectedTags(tags)
                 }
-                }else {
+                else{
                     Recipe.displayNoResultMessage();
                 }
+            }
+
+            if(searchTerm.length < 3 && event.inputType == "deleteContentBackward") {
+                Recipe.displayRecipes(recipes);
             }
         })
     }
@@ -54,17 +58,30 @@ class Recipe {
         return filteredRecipes
     }
 
-    // static filterRecipesByTags(recipes, selectedTag) {
-    //     const filteredRecipesWithTag = recipes.filter(recipe =>{
-    //         // check if any ingredient, ustensil or appliance 
-    //         const recipeTags = [
-    //             recipe.ingredients.map(ingredient => ingredient.ingredient),
-    //             recipe.appliance,
-    //             recipe.ustensils
-    //         ]
-    //         return selectedTag.every(tag => recipeTags.ingredient.ingredient.includes(tag) && )
-    //     })
-    //     Recipe.displayRecipes(filteredRecipesWithTag)
+    static filterRecipesByTags() {    
+
+        const tagBadges = document.querySelectorAll('.filter__tag--text') 
+        const selectedBadges = [];
         
-    // }
+        tagBadges.forEach(badge => {
+            badge = badge.textContent
+            selectedBadges.push(badge)
+        })
+
+        const filteredBadges = recipes.filter(recipe => {
+            const matchingIngredients = recipe.ingredients.filter(ingredient => {
+                return selectedBadges.some(tag => ingredient.ingredient.toLowerCase().includes(tag.toLowerCase()))
+            });
+
+            const matchingAppliances =  selectedBadges.includes(recipe.appliance)
+
+            const matchingUstensils = selectedBadges.some(badge => recipe.ustensils.includes(badge.toLowerCase()))
+
+            return  matchingIngredients.length > 0 ||
+                     matchingAppliances ||
+                     matchingUstensils;
+        })
+        Recipe.displayRecipes(filteredBadges)
+        
+    }
 }
