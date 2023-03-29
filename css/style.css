@@ -256,13 +256,13 @@ form i{
 /* Recipes Wrapper  */
 
 .recipes__wrapper{
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
-    justify-content: space-between;
+    grid-template-columns: repeat(3, 463px);
 }
 
 .recipes__card{
-    width: 30%;
+    width: 80%;
     cursor: pointer;
     margin: 2rem 0;
 }
