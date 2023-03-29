@@ -81,19 +81,21 @@ class Dropdown {
                     Dropdown.fillDropDowns(searchResultTag);
                     Dropdown.handleSelectedTags(searchResultTag);
 
-                    const updateRecipe = recipes.filter(recipe =>{
-                        const lowerCaseRecipeName = recipe.name.toLowerCase()
-                        const lowerCaseRecipeDescription = recipe.description.toLowerCase()
-            
+                    const matchingRecipes = [];
+                    for(let i = 0; i < recipes.length; i++){
+                        const recipe = recipes[i];
+                        const lowerCaseRecipeName = recipe.name.toLowerCase();
+                        const lowerCaseRecipeDescription = recipe.description.toLowerCase();
+
                         const matchingIngredients = recipe.ingredients.filter(ingredient => {
                             return ingredient.ingredient.toLowerCase().includes(searchTag)
-                        })
-            
-                        return lowerCaseRecipeName.includes(searchTag) ||
-                                lowerCaseRecipeDescription.includes(searchTag) ||
-                                matchingIngredients.length > 0 
-                    })
-                    Recipe.displayRecipes(updateRecipe)
+                        });
+
+                        if(lowerCaseRecipeName.includes(searchTag) || lowerCaseRecipeDescription.includes(searchTag) || matchingIngredients.length > 0) {
+                            matchingRecipes.push(recipe);
+                        }
+                    }
+                    Recipe.displayRecipes(matchingRecipes)
                 } else{
                     Dropdown.fillDropDowns(tags);
                     Recipe.displayRecipes(recipes);
@@ -203,17 +205,20 @@ class Dropdown {
 
     static updateDropdowns() {
         
-        const matchingRecipes = recipes.filter(recipe => {
-            const hasMatchingIngredient = recipe.ingredients.some(ingredient => ingredient.ingredient.includes(Dropdown.selectedTags)); 
-            
-            const hasMatchingAppliance = recipe.appliance.includes(Dropdown.selectedTags);
+        const matchingRecipes = [];
 
+        for (let i = 0; i < recipes.length; i++){
+            const recipe = recipes[i];
+
+            const hasMatchingIngredient = recipe.ingredients.some(ingredient => ingredient.ingredient.includes(Dropdown.selectedTags));   
+            const hasMatchingAppliance = recipe.appliance.includes(Dropdown.selectedTags);
             const hasMatchingUstensil = recipe.ustensils.some(ustensil => ustensil.includes(Dropdown.selectedTags));
 
-
-            return hasMatchingIngredient || hasMatchingAppliance || hasMatchingUstensil;
-        })
-
+            if(hasMatchingIngredient || hasMatchingAppliance || hasMatchingUstensil) {
+                matchingRecipes.push(recipe);
+            }
+        }
+ 
         const tags = Utils.getTags(matchingRecipes)
 
         Dropdown.fillDropDowns(tags, Dropdown.selectedTags)
