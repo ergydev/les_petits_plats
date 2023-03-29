@@ -42,18 +42,18 @@ class Recipe {
     }
 
     static searchRecipe(recipes, searchTerm) {
-        const filteredRecipes = recipes.filter(recipe => {
-            const lowerCaseRecipeName = recipe.name.toLowerCase()
-            const lowerCaseRecipeDescription = recipe.description.toLowerCase()
-
-            const matchingIngredients = recipe.ingredients.filter(ingredient => {
-                return ingredient.ingredient.toLowerCase().includes(searchTerm)
+        const filteredRecipes =  [];
+        
+        
+        for (let i = 0; i < recipes.length; i++) {
+            let ingredients = recipes[i].ingredients.map(function(ing){
+                return ing.ingredient
             })
 
-            return lowerCaseRecipeName.includes(searchTerm) ||
-                    lowerCaseRecipeDescription.includes(searchTerm) ||
-                    matchingIngredients.length > 0 
-        })
+            if(recipes[i].name.includes(searchTerm) || recipes[i].description.includes(searchTerm) || ingredients.includes(searchTerm) ) {
+                filteredRecipes.push(recipes[i])
+            }
+        }
 
         return filteredRecipes
     }
