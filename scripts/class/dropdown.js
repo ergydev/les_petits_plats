@@ -20,6 +20,8 @@ const ustensilesFilter = document.getElementById('ustensiles');
 const ustensilesWrapper = document.getElementById('ustensiles-dropdown-wrapper');
 
 class Dropdown {
+    static selectedTags = []
+
     static openDropdown(filter, dropdown, category, input){
         filter.onclick = function(e) {
             dropdown.classList.toggle('hidden');
@@ -33,18 +35,34 @@ class Dropdown {
         this.openDropdown(ingredientFilter, ingredientsDropdown, categoryIngredients, ingredientsInput);
         this.openDropdown(appareilsFilter, appareilsDropdown, categoryAppareils, appareilsInput);
         this.openDropdown(ustensilesFilter, ustensilesDropdown, categoryUstensiles, ustensilesInput);
-
-        this.handleSelectedTags()
     }
 
-    static fillDropwdowns(tags) {
-        const ingredientsTags = tags.ingredients.map(ing => `<p class="ingredients-tags item-tag" data-category="filter__tag--ingredient">${ing}</p>`);
-        const appliancesTags = tags.appliance.map(apl => `<p class="appareils-tags item-tag" data-category="filter__tag--appareil">${apl}</p>`);
-        const ustensilsTags = tags.ustensils.map(ust => `<p class="ustensiles-tags item-tag" data-category="filter__tag--ustensil">${ust}</p>` );
+    static fillDropDowns(tags) {
+
+        const ingredientsTags = []
+        const appliancesTags = []
+        const ustensilsTags = []
+        
+        tags.ingredients.forEach(ingredient => {
+            if(!Dropdown.selectedTags.includes(ingredient))
+                ingredientsTags.push(`<p class="ingredients-tags item-tag" data-category="filter__tag--ingredient">${ingredient}</p>`)
+        } );
+        
+        tags.appliance.forEach(appliance => {
+            if(!Dropdown.selectedTags.includes(appliance))
+                appliancesTags.push( `<p class="appareils-tags item-tag" data-category="filter__tag--appareil">${appliance}</p>`)
+        });
+
+        tags.ustensils.forEach(ustensil => {
+            if(!Dropdown.selectedTags.includes(ustensil))
+                ustensilsTags.push(`<p class="ustensiles-tags item-tag" data-category="filter__tag--ustensil">${ustensil}</p>`)
+        } );
     
         ingredientsWrapper.innerHTML = ingredientsTags.join('');
         appareilsWrapper.innerHTML = appliancesTags.join('');
         ustensilesWrapper.innerHTML = ustensilsTags.join('');
+
+        Dropdown.handleSelectedTags()
     }
 
     static handleTagsSearch(tags) {
@@ -54,16 +72,18 @@ class Dropdown {
             { input: ustensilesInput, category: categoryUstensiles },
         ];
 
-        searchInputs.forEach(({ input, category}) => {
+        searchInputs.forEach(({ input }) => {
             input.addEventListener('input', (event) => {
                 let searchTag = event.target.value;
                 searchTag = searchTag.toLowerCase().trim();
-                if(searchTag.length >= 3){
+                if(searchTag.length >= 3) {
                     const searchResultTag = Dropdown.searchFilteredTag(tags, searchTag);
-                    Dropdown.fillDropwdowns(searchResultTag);
+                    Dropdown.fillDropDowns(searchResultTag);
                     Dropdown.handleSelectedTags(searchResultTag);
+                    
                 } else{
-                    Dropdown.fillDropwdowns(tags);
+                    Dropdown.fillDropDowns(tags);
+                    Recipe.displayRecipes(recipes);
                 }
                 event.stopPropagation()
             })
@@ -96,32 +116,32 @@ class Dropdown {
     }
 
     static handleSelectedTags() {
-        const selectedTags = document.querySelectorAll('.dropdown-wrapper .item-tag');
-        const selectedTagsDiv = document.querySelector('.header__filters--tags');
-        let selectedTag = [];
+        const allTags = document.querySelectorAll('.dropdown-wrapper .item-tag');
+        const allTagsDiv = document.querySelector('.header__filters--tags');
+        let selectedTags = [];
 
-        selectedTags.forEach(tag => {
+        allTags.forEach(tag => {
             tag.addEventListener('click', (event) =>{
                 const elm = event.target
                 const tagText = elm.textContent;
                 const tagCategory = elm.dataset.category
 
-                if(!selectedTag.includes(tagText)) {
-                    selectedTag.push(tagText);
+                if(!Dropdown.selectedTags.includes(tagText)) {
+                    Dropdown.selectedTags.push(tagText);
                 }
 
-                const tagDiv = Dropdown.createBadge(tagText, tagCategory, selectedTag)
+                const tagDiv = Dropdown.createBadge(tagText, tagCategory, Dropdown.selectedTags)
                 
-                selectedTagsDiv.appendChild(tagDiv);
+                allTagsDiv.appendChild(tagDiv);
 
-                Recipe.filterRecipesByTags(selectedTag);
+                Recipe.filterRecipesByTags(Dropdown.selectedTags);
+                Dropdown.updateDropdowns(Dropdown.selectedTags);
                 event.stopPropagation();
-                return selectedTag
             })
         })
     }
 
-    static createBadge(title, bgClass, selectedTag) {
+    static createBadge(title, bgClass) {
 
         const tagDiv =  document.createElement('div');
         tagDiv.classList.add('filter__tag');
@@ -149,14 +169,16 @@ class Dropdown {
 
         tagIcon.addEventListener('click', (event) =>{
             event.target.parentElement.remove();
-            const index = selectedTag.indexOf(title);
+            const index = Dropdown.selectedTags.indexOf(title);
             if(index > -1) {
-                selectedTag.splice(index, 1);
+                Dropdown.selectedTags.splice(index, 1);
+                Dropdown.fillDropDowns(Utils.getTags(recipes))
             }
-            if(selectedTag.length === 0 ) {
+            if(Dropdown.selectedTags.length === 0 ) {
                 Recipe.displayRecipes(recipes) 
+                Dropdown.fillDropDowns(Utils.getTags(recipes))
             }else {
-                Recipe.filterRecipesByTags(selectedTag)
+                Recipe.filterRecipesByTags(Dropdown.selectedTags)
             }
         })
         
@@ -166,13 +188,31 @@ class Dropdown {
         return tagDiv
     }
 
-    static showElementsDropdown(recipes){
+    static updateDropdowns() {
+        
+        const matchingRecipes = recipes.filter(recipe => {
+            const hasMatchingIngredient = recipe.ingredients.some(ingredient => ingredient.ingredient.includes(Dropdown.selectedTags)); 
+            
+            const hasMatchingAppliance = recipe.appliance.includes(Dropdown.selectedTags);
+
+            const hasMatchingUstensil = recipe.ustensils.some(ustensil => ustensil.includes(Dropdown.selectedTags));
+
+
+            return hasMatchingIngredient || hasMatchingAppliance || hasMatchingUstensil;
+        })
+
+        const tags = Utils.getTags(matchingRecipes)
+
+        Dropdown.fillDropDowns(tags, Dropdown.selectedTags)
+    }
+
+    static showElementsDropdown(recipes) {
         const tags = Utils.getTags(recipes);
         this.handleTagsSearch(tags);
         this.searchFilteredTag(tags);
-        this.fillDropwdowns(tags);
+        this.fillDropDowns(tags, selectedTags);
         this.initDropdowns();
-        this.handleSelectedTags(recipes);
+        this.updateDropdowns(selectedTags);
     }
 }
 

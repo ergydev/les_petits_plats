@@ -123,6 +123,7 @@ form i{
     text-align: center;
     height: 37px;
     justify-content: center;
+    text-transform: capitalize;
 }
 
 .filter__tag--ingredient{

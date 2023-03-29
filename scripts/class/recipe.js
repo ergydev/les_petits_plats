@@ -84,4 +84,6 @@ class Recipe {
         Recipe.displayRecipes(filteredBadges)
         
     }
+
+    static searchRecipeByTag() {}
 }

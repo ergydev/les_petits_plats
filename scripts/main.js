@@ -5,9 +5,8 @@
     const tags = Utils.getTags(recipes)
     Dropdown.handleTagsSearch(tags)
     Dropdown.handleSelectedTags(tags)
-    Dropdown.fillDropwdowns(tags)
+    Dropdown.fillDropDowns(tags)
     Dropdown.initDropdowns()
-    // Recipe.filterRecipesByTags(recipes)
 })()
 
 
