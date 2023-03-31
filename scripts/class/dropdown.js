@@ -24,10 +24,12 @@ class Dropdown {
 
     static openDropdown(filter, dropdown, category, input){
         filter.onclick = function(e) {
+            // Dropdown.closeOtherDropdowns(dropdown);
             dropdown.classList.toggle('hidden');
             category.classList.toggle('expand__' + category.id);
             input.placeholder = category.classList.contains('expand__' + category.id) ? 'Rechercher par ' + category.id : category.id;
             input.focus();
+
         };
     }
 
@@ -36,6 +38,21 @@ class Dropdown {
         this.openDropdown(appareilsFilter, appareilsDropdown, categoryAppareils, appareilsInput);
         this.openDropdown(ustensilesFilter, ustensilesDropdown, categoryUstensiles, ustensilesInput);
     }
+
+    // static closeOtherDropdowns(currentDropdown) {
+    //     const dropdowns = document.querySelectorAll('.dropdowns');
+    //     dropdowns.forEach((dropdown) => {
+    //         if(dropdown !== currentDropdown && !dropdown.classList.contains('hidden')) {
+    //             const category = document.querySelector(`.expand__` + dropdown.id);
+    //             console.log(category)
+    //             const input = dropdown.querySelector('input');
+    //             dropdown.classList.toggle('hidden');
+    //             category.classList.remove(`.expand__` + dropdown.id);
+    //             input.placeholder = dropdown.id;
+    //             input.value = '';
+    //         }
+    //     })
+    // }
 
     static fillDropDowns(tags) {
 
@@ -79,7 +96,6 @@ class Dropdown {
                 if(searchTag.length >= 3) {
                     const searchResultTag = Dropdown.searchFilteredTag(tags, searchTag);
                     Dropdown.fillDropDowns(searchResultTag);
-                    Dropdown.handleSelectedTags(searchResultTag);
 
                     const matchingRecipes = [];
                     for(let i = 0; i < recipes.length; i++){
@@ -133,7 +149,6 @@ class Dropdown {
     static handleSelectedTags() {
         const allTags = document.querySelectorAll('.dropdown-wrapper .item-tag');
         const allTagsDiv = document.querySelector('.header__filters--tags');
-        let selectedTags = [];
 
         allTags.forEach(tag => {
             tag.addEventListener('click', (event) =>{
