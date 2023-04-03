@@ -80,6 +80,7 @@ class Dropdown {
                     const searchResultTag = Dropdown.searchFilteredTag(tags, searchTag);
                     Dropdown.fillDropDowns(searchResultTag);
 
+
                     const updateRecipe = recipes.filter(recipe =>{
                         const lowerCaseRecipeName = recipe.name.toLowerCase()
                         const lowerCaseRecipeDescription = recipe.description.toLowerCase()
