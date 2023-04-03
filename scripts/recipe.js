@@ -44,12 +44,17 @@ class Recipe {
     static searchRecipe(recipes, searchTerm) {
         const filteredRecipes =  [];
         
-        
         for (let i = 0; i < recipes.length; i++) {
-            let ingredients = recipes[i].ingredients.map(ing => ing.ingredient.toLowerCase());
+            const currentRecipe = recipes[i]
+            const allIngredients = []
+            
+            for(let k = 0; k < currentRecipe.ingredients; k++){
+                const currentIng = currentRecipe.ingredients[k].ingredient.toLowerCase()
+                allIngredients.push(currentIng)
+            }
 
-            if(recipes[i].name.toLowerCase().includes(searchTerm) || recipes[i].description.toLowerCase().includes(searchTerm) || ingredients.includes(searchTerm) ) {
-                filteredRecipes.push(recipes[i])
+            if(currentRecipe.name.toLowerCase().includes(searchTerm) || currentRecipe.description.toLowerCase().includes(searchTerm) || allIngredients.includes(searchTerm) ) {
+                filteredRecipes.push(currentRecipe)
             }
         }
         return filteredRecipes
@@ -91,6 +96,11 @@ class Recipe {
             if (matchingIngredients.length > 0 || matchingAppliances || matchingUstensils ) {
                 filteredRecipesByTag.push(recipe);
             }
+            
+            if (matchingIngredients.length > 0 && matchingAppliances && matchingUstensils ) {
+                filteredRecipesByTag.push(recipe);
+            }
+
         }
         Recipe.displayRecipes(filteredRecipesByTag)
         
