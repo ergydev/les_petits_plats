@@ -31,6 +31,12 @@ class Dropdown {
         };
     }
 
+    static closeDropdown(dropdown, category, input){
+        dropdown.classList.add('hidden');
+        category.classList.remove('expand__' + category.id);
+        input.placeholder = category.id
+    }
+
     static initDropdowns() {
         this.openDropdown(ingredientFilter, ingredientsDropdown, categoryIngredients, ingredientsInput);
         this.openDropdown(appareilsFilter, appareilsDropdown, categoryAppareils, appareilsInput);
@@ -62,6 +68,13 @@ class Dropdown {
         appareilsWrapper.innerHTML = appliancesTags.join('');
         ustensilesWrapper.innerHTML = ustensilsTags.join('');
 
+        if(ingredientsTags.length === 0 || appliancesTags.length === 0 || ustensilsTags.length === 0) {
+            Dropdown.closeDropdown(ingredientsDropdown, categoryIngredients, ingredientsInput)
+            Dropdown.closeDropdown(appareilsDropdown, categoryAppareils, appareilsInput)
+            Dropdown.closeDropdown(ustensilesDropdown, categoryUstensiles, ustensilesInput)
+            console.log('ok')
+        }
+        console.log(ingredientsTags.length)
         Dropdown.handleSelectedTags()
     }
 
@@ -131,7 +144,6 @@ class Dropdown {
     static handleSelectedTags() {
         const allTags = document.querySelectorAll('.dropdown-wrapper .item-tag');
         const allTagsDiv = document.querySelector('.header__filters--tags');
-        let selectedTags = [];
 
         allTags.forEach(tag => {
             tag.addEventListener('click', (event) =>{
@@ -202,7 +214,6 @@ class Dropdown {
     }
 
     static updateDropdowns() {
-        
         const matchingRecipes = recipes.filter(recipe => {
             const hasMatchingIngredient = recipe.ingredients.some(ingredient => ingredient.ingredient.includes(Dropdown.selectedTags)); 
             
@@ -213,9 +224,7 @@ class Dropdown {
 
             return hasMatchingIngredient || hasMatchingAppliance || hasMatchingUstensil;
         })
-
         const tags = Utils.getTags(matchingRecipes)
-
         Dropdown.fillDropDowns(tags, Dropdown.selectedTags)
     }
 
