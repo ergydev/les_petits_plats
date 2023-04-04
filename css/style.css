@@ -124,6 +124,12 @@ form i{
     height: 37px;
     justify-content: center;
     text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F8F9FA;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
 }
 
 .filter__tag--ingredient{
@@ -134,6 +140,12 @@ form i{
 }
 .filter__tag--ustensil{
     background-color: #D04F4F;
+}
+
+.filter__tag--text{
+    padding: 0.25rem;
+    margin-right: 0.5rem;
+    font-weight: 700;
 }
 
 /* filters  */

@@ -170,27 +170,17 @@ class Dropdown {
 
         const tagDiv =  document.createElement('div');
         tagDiv.classList.add('filter__tag');
-        tagDiv.classList.add('d-flex');
-        tagDiv.classList.add('text-light');
-        tagDiv.classList.add('align-items-center');
-        tagDiv.classList.add('py-2');
-        tagDiv.classList.add('px-3');
         tagDiv.classList.add('rounded');
-        tagDiv.classList.add('me-2');
         tagDiv.classList.add(bgClass);
 
         const tagElem = document.createElement('p');
         tagElem.textContent = title;
         tagElem.classList.add('filter__tag--text');
-        tagElem.classList.add('px-1');
-        tagElem.classList.add('me-2');
-        tagElem.classList.add('fw-bold');
 
         const tagIcon = document.createElement('i');
         tagIcon.classList.add('fa-regular');
         tagIcon.classList.add('fa-circle-xmark');
         tagIcon.classList.add('close-icon');
-
 
         tagIcon.addEventListener('click', (event) =>{
             event.target.parentElement.remove();
