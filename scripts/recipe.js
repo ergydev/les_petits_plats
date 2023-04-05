@@ -65,44 +65,28 @@ class Recipe {
         const tagBadges = document.querySelectorAll('.filter__tag--text') 
         const selectedBadges = [];
         
-        for (let i = 0; i < tagBadges.length; i++){
-            selectedBadges.push(tagBadges[i].textContent);
-        }
+        tagBadges.forEach(badge => {
+            badge = badge.textContent
+            selectedBadges.push(badge)
+        })
 
-        const filteredRecipesByTag = [];
+        const filteredBadges = recipes.filter(recipe => {
 
-        for (let i = 0; i < recipes.length; i++) {
-            const recipe = recipes[i];
+            let matchCount = 0
 
-            const matchingIngredients = recipe.ingredients.filter(ingredient => {
-                for (let ing = 0; ing < selectedBadges.length; ing++) {
-                    if(ingredient.ingredient.toLowerCase().includes(selectedBadges[ing].toLowerCase())){
-                        return true;
-                    }
-                }
-            })
-
-            const matchingAppliances = selectedBadges.includes(recipe.appliance.toLowerCase());
-
-            const matchingUstensils = recipe.ustensils.filter(ustensil => {
-                for (let ust = 0; ust < selectedBadges.length; ust++) {
-                    if (ustensil.toLowerCase().includes(selectedBadges[ust].toLowerCase())) {
-                        return true;
-                    }
-                }
-                return false;
-            }).length > 0;
-
-            if (matchingIngredients.length > 0 || matchingAppliances || matchingUstensils ) {
-                filteredRecipesByTag.push(recipe);
-            }
-            
-            if (matchingIngredients.length > 0 && matchingAppliances && matchingUstensils ) {
-                filteredRecipesByTag.push(recipe);
+            for(const tag of selectedBadges) {
+                
+                const matchingIngredients = recipe.ingredients.filter(ingredient => {
+                    return ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
+                });
+                if (matchingIngredients.length > 0) matchCount++ 
+                if(recipe.appliance.toLocaleLowerCase().includes(tag.toLocaleLowerCase())) matchCount++
+                if(recipe.ustensils.some(ustensil => ustensil.toLocaleLowerCase().includes(tag.toLocaleLowerCase()))) matchCount++
             }
 
-        }
-        Recipe.displayRecipes(filteredRecipesByTag)
+            return selectedBadges.length > 0 ? matchCount === selectedBadges.length : false;
+        })
+        Recipe.displayRecipes(filteredBadges)
         
     }
 
