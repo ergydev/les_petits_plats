@@ -33,26 +33,17 @@ class Dropdown {
         };
     }
 
+    static closeDropdown(dropdown, category, input){
+        dropdown.classList.add('hidden');
+        category.classList.remove('expand__' + category.id);
+        input.placeholder = category.id
+    }
+
     static initDropdowns() {
         this.openDropdown(ingredientFilter, ingredientsDropdown, categoryIngredients, ingredientsInput);
         this.openDropdown(appareilsFilter, appareilsDropdown, categoryAppareils, appareilsInput);
         this.openDropdown(ustensilesFilter, ustensilesDropdown, categoryUstensiles, ustensilesInput);
     }
-
-    // static closeOtherDropdowns(currentDropdown) {
-    //     const dropdowns = document.querySelectorAll('.dropdowns');
-    //     dropdowns.forEach((dropdown) => {
-    //         if(dropdown !== currentDropdown && !dropdown.classList.contains('hidden')) {
-    //             const category = document.querySelector(`.expand__` + dropdown.id);
-    //             console.log(category)
-    //             const input = dropdown.querySelector('input');
-    //             dropdown.classList.toggle('hidden');
-    //             category.classList.remove(`.expand__` + dropdown.id);
-    //             input.placeholder = dropdown.id;
-    //             input.value = '';
-    //         }
-    //     })
-    // }
 
     static fillDropDowns(tags) {
 
