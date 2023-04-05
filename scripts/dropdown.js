@@ -70,6 +70,13 @@ class Dropdown {
         appareilsWrapper.innerHTML = appliancesTags.join('');
         ustensilesWrapper.innerHTML = ustensilsTags.join('');
 
+        if(ingredientsTags.length === 0 || appliancesTags.length === 0 || ustensilsTags.length === 0) {
+            Dropdown.closeDropdown(ingredientsDropdown, categoryIngredients, ingredientsInput)
+            Dropdown.closeDropdown(appareilsDropdown, categoryAppareils, appareilsInput)
+            Dropdown.closeDropdown(ustensilesDropdown, categoryUstensiles, ustensilesInput)
+            console.log('ok')
+        }
+
         Dropdown.handleSelectedTags()
     }
 
