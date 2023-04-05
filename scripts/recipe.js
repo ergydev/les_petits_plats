@@ -6,8 +6,12 @@ class Recipe {
         let template = ''
         const recipesSection = document.querySelector('.recipes__wrapper');
         
-        recipes.map(recipe => template += createRecipeCard(recipe))
-        recipesSection.innerHTML = template
+        if (recipes.length > 0){
+            recipes.map(recipe => template += createRecipeCard(recipe))
+            recipesSection.innerHTML = template
+        } else {
+            recipesSection.innerHTML = '<p>Aucune recette trouvée</p>'
+        }
     }
 
     static handleSearch(recipes) {
@@ -69,17 +73,20 @@ class Recipe {
         })
 
         const filteredBadges = recipes.filter(recipe => {
-            const matchingIngredients = recipe.ingredients.filter(ingredient => {
-                return selectedBadges.some(tag => ingredient.ingredient.toLowerCase().includes(tag.toLowerCase()))
-            });
 
-            const matchingAppliances =  selectedBadges.includes(recipe.appliance)
+            let matchCount = 0
 
-            const matchingUstensils = selectedBadges.some(badge => recipe.ustensils.includes(badge.toLowerCase()))
+            for(const tag of selectedBadges) {
+                
+                const matchingIngredients = recipe.ingredients.filter(ingredient => {
+                    return ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
+                });
+                if (matchingIngredients.length > 0) matchCount++ 
+                if(recipe.appliance.toLocaleLowerCase().includes(tag.toLocaleLowerCase())) matchCount++
+                if(recipe.ustensils.some(ustensil => ustensil.toLocaleLowerCase().includes(tag.toLocaleLowerCase()))) matchCount++
+            }
 
-            return  matchingIngredients.length > 0 ||
-                     matchingAppliances ||
-                     matchingUstensils;
+            return selectedBadges.length > 0 ? matchCount === selectedBadges.length : false;
         })
         Recipe.displayRecipes(filteredBadges)
         
