@@ -74,7 +74,7 @@ class Dropdown {
             Dropdown.closeDropdown(ustensilesDropdown, categoryUstensiles, ustensilesInput)
             console.log('ok')
         }
-        console.log(ingredientsTags.length)
+
         Dropdown.handleSelectedTags()
     }
 
