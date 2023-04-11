@@ -72,7 +72,6 @@ class Dropdown {
             Dropdown.closeDropdown(ingredientsDropdown, categoryIngredients, ingredientsInput)
             Dropdown.closeDropdown(appareilsDropdown, categoryAppareils, appareilsInput)
             Dropdown.closeDropdown(ustensilesDropdown, categoryUstensiles, ustensilesInput)
-            console.log('ok')
         }
 
         Dropdown.handleSelectedTags()
@@ -93,20 +92,6 @@ class Dropdown {
                     const searchResultTag = Dropdown.searchFilteredTag(tags, searchTag);
                     Dropdown.fillDropDowns(searchResultTag);
 
-
-                    const updateRecipe = recipes.filter(recipe =>{
-                        const lowerCaseRecipeName = recipe.name.toLowerCase()
-                        const lowerCaseRecipeDescription = recipe.description.toLowerCase()
-            
-                        const matchingIngredients = recipe.ingredients.filter(ingredient => {
-                            return ingredient.ingredient.toLowerCase().includes(searchTag)
-                        })
-            
-                        return lowerCaseRecipeName.includes(searchTag) ||
-                                lowerCaseRecipeDescription.includes(searchTag) ||
-                                matchingIngredients.length > 0 
-                    })
-                    Recipe.displayRecipes(updateRecipe)
                 } else{
                     Dropdown.fillDropDowns(tags);
                     Recipe.displayRecipes(recipes);
