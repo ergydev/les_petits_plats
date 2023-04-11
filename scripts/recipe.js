@@ -18,21 +18,30 @@ class Recipe {
             searchTerm = searchTerm.toLowerCase().trim();
             if(searchTerm.length >=  3){
                 const searchResult = Recipe.searchRecipe(recipes, searchTerm)
+                
                 if(searchResult.length > 0){
-                    Recipe.displayRecipes(searchResult)
                     const tags = Utils.getTags(searchResult)
+                    Recipe.displayRecipes(searchResult)
                     Dropdown.fillDropDowns(tags)
                     Dropdown.handleTagsSearch(tags)
-                    Dropdown.handleSelectedTags(tags)
                 }
                 else{
                     Recipe.displayNoResultMessage();
                 }
             }
+            if(searchTerm.length <3 && selectedBadges.length > 0 ){
+                Recipe.filterRecipesByTags()
+            }
 
             if(searchTerm.length < 3 && event.inputType == "deleteContentBackward") {
                 Recipe.displayRecipes(recipes);
+                const tags = Utils.getTags(recipes)
+                Dropdown.fillDropDowns(tags)
+                Dropdown.handleTagsSearch(tags)
+                Dropdown.handleSelectedTags(tags)
             }
+
+
         })
     }
 
