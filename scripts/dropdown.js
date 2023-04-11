@@ -95,21 +95,6 @@ class Dropdown {
                     const searchResultTag = Dropdown.searchFilteredTag(tags, searchTag);
                     Dropdown.fillDropDowns(searchResultTag);
 
-                    const matchingRecipes = [];
-                    for(let i = 0; i < recipes.length; i++){
-                        const recipe = recipes[i];
-                        const lowerCaseRecipeName = recipe.name.toLowerCase();
-                        const lowerCaseRecipeDescription = recipe.description.toLowerCase();
-
-                        const matchingIngredients = recipe.ingredients.filter(ingredient => {
-                            return ingredient.ingredient.toLowerCase().includes(searchTag)
-                        });
-
-                        if(lowerCaseRecipeName.includes(searchTag) || lowerCaseRecipeDescription.includes(searchTag) || matchingIngredients.length > 0) {
-                            matchingRecipes.push(recipe);
-                        }
-                    }
-                    Recipe.displayRecipes(matchingRecipes)
                 } else{
                     Dropdown.fillDropDowns(tags);
                     Recipe.displayRecipes(recipes);
