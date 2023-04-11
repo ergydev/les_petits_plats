@@ -269,7 +269,6 @@ form i{
 
 .recipes__wrapper{
     display: grid;
-    flex-wrap: wrap;
     grid-template-columns: repeat(3, 463px);
 }
 
@@ -315,3 +314,16 @@ form i{
     overflow: hidden;
 }
 
+@media screen and (max-width: 1024px) {
+    .recipes__wrapper{
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .recipes__wrapper{
+        grid-template-columns: 1fr ;
+        justify-items: center;
+    }
+}
