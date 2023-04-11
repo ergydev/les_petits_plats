@@ -22,21 +22,30 @@ class Recipe {
             searchTerm = searchTerm.toLowerCase().trim();
             if(searchTerm.length >=  3){
                 const searchResult = Recipe.searchRecipe(recipes, searchTerm)
+                
                 if(searchResult.length > 0){
-                    Recipe.displayRecipes(searchResult)
                     const tags = Utils.getTags(searchResult)
-                    Dropdown.fillDropwdowns(tags)
+                    Recipe.displayRecipes(searchResult)
+                    Dropdown.fillDropDowns(tags)
                     Dropdown.handleTagsSearch(tags)
-                    Dropdown.handleSelectedTags(tags)
                 }
                 else{
                     Recipe.displayNoResultMessage();
                 }
             }
+            if(searchTerm.length <3 && selectedBadges.length > 0 ){
+                Recipe.filterRecipesByTags()
+            }
 
             if(searchTerm.length < 3 && event.inputType == "deleteContentBackward") {
                 Recipe.displayRecipes(recipes);
+                const tags = Utils.getTags(recipes)
+                Dropdown.fillDropDowns(tags)
+                Dropdown.handleTagsSearch(tags)
+                Dropdown.handleSelectedTags(tags)
             }
+
+
         })
     }
 
@@ -47,20 +56,20 @@ class Recipe {
 
     static searchRecipe(recipes, searchTerm) {
         const filteredRecipes = recipes.filter(recipe => {
-            const lowerCaseRecipeName = recipe.name.toLowerCase()
-            const lowerCaseRecipeDescription = recipe.description.toLowerCase()
-
-            const matchingIngredients = recipe.ingredients.filter(ingredient => {
-                return ingredient.ingredient.toLowerCase().includes(searchTerm)
-            })
-
-            return lowerCaseRecipeName.includes(searchTerm) ||
-                    lowerCaseRecipeDescription.includes(searchTerm) ||
-                    matchingIngredients.length > 0 
-        })
-
-        return filteredRecipes
-    }
+          const lowerCaseRecipeName = recipe.name.toLowerCase()
+          const lowerCaseRecipeDescription = recipe.description.toLowerCase()
+      
+          const hasMatchingTag = recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchTerm)) ||
+                                 recipe.appliance.toLowerCase().includes(searchTerm) ||
+                                 recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(searchTerm));
+      
+          return lowerCaseRecipeName.includes(searchTerm) ||
+                 lowerCaseRecipeDescription.includes(searchTerm) ||
+                 hasMatchingTag;
+        });
+      
+        return filteredRecipes;
+      }
 
     static filterRecipesByTags() {    
 
